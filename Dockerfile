@@ -29,9 +29,15 @@ RUN adduser xrdp ssl-cert
 # You can change these values as needed
 RUN useradd -m -s /bin/bash developer && \
     usermod -aG sudo developer \
-    echo "developer:gcet1234" | chpasswd && \
-    echo "developer ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/developer
+    echo "developer:gcet1234" | chpasswd 
 
+RUN apt-get update && \
+    apt-get install -y sudo && \
+    mkdir -p /etc/sudoers.d && \
+    echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
+    chmod 0440 /etc/sudoers.d/developer
+
+	
 # Configure the GNOME session specifically for XRDP connections
 RUN echo "export GNOME_SHELL_SESSION_MODE=ubuntu" > /home/developer/.xsessionrc && \
     echo "export XDG_CURRENT_DESKTOP=GNOME:Ubuntu:GNOME" >> /home/developer/.xsessionrc && \
