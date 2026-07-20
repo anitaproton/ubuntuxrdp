@@ -39,11 +39,11 @@ RUN apt-get update && \
 
 	
 # Configure the GNOME session specifically for XRDP connections
-RUN echo "export GNOME_SHELL_SESSION_MODE=ubuntu" > /home/developer/.xsessionrc && \
-    echo "export XDG_CURRENT_DESKTOP=GNOME:Ubuntu:GNOME" >> /home/developer/.xsessionrc && \
+RUN echo "export GNOME_SHELL_SESSION_MODE=developer" > /home/developer/.xsessionrc && \
+    echo "export XDG_CURRENT_DESKTOP=GNOME:developer:GNOME" >> /home/developer/.xsessionrc && \
     echo "export XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg" >> /home/developer/.xsessionrc && \
     echo "gnome-session" > /home/developer/.xsession && \
-    chown developer:ubuntu /home/developer/.xsessionrc /home/developer/.xsession
+    chown developer:developer /home/developer/.xsessionrc /home/developer/.xsession
 
 # Expose the standard RDP port
 EXPOSE 3389
