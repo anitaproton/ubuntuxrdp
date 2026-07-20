@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     supervisor \
     x11-xserver-utils \
+	dbus-x11 \
     wget \
     vim \
     net-tools
