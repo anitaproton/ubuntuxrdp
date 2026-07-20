@@ -1,5 +1,7 @@
 #!/bin/bash
 
+service dbus start
+
 systemctl enable xrdp
 
 systemctl set-default graphical.target
