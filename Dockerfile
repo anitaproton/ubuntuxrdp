@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y \
     net-tools
     
 # Set root password
-RUN echo "root:root" | chpasswd
+RUN echo "root:Gcet@321" | chpasswd
 
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
