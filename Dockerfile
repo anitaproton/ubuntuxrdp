@@ -22,7 +22,7 @@ RUN apt-get install -y  xrdp \
     wget \
     vim \
     net-tools \
-    apt clean && rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/*
 
 # Configure XRDP to use the ssl-cert group
 RUN adduser xrdp ssl-cert
