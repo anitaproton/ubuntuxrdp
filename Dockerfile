@@ -1,47 +1,43 @@
-FROM debian:bullseye
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN dpkg --add-architecture i386
+RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
+	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+ENV LANG en_US.utf8
 
-RUN apt update && apt install -y \
+RUN apt install ubuntu-gnome-desktop -y \
     xrdp \
-    xfce4 \
-    xfce4-goodies \
-    xorg \
-    dbus-x11 \
-    sudo \
     curl \
+    supervisor \
+    sudo \
+    dbus-x11 \
+    x11-xserver-utils \
     wget \
-    nano \
+    vim \
     net-tools \
-    policykit-1 \
-    pulseaudio \
-    pulseaudio-utils \
-    wine \
-    wine32 \
-    firefox-esr && \
     apt clean && rm -rf /var/lib/apt/lists/*
 
-# Set root password
-RUN echo "root:root" | chpasswd
-
-RUN sed -i 's/^allowed_users=.*/allowed_users=anybody/' /etc/X11/Xwrapper.config || echo "allowed_users=anybody" >> /etc/X11/Xwrapper.config
-
-RUN echo "startxfce4" > /root/.xsession && chmod 700 /root/.xsession
-
-# Generate machine-id for dbus
-RUN mkdir -p /var/run/dbus && dbus-uuidgen > /var/lib/dbus/machine-id
-
-RUN sed -i 's/crypt_level=high/crypt_level=low/' /etc/xrdp/xrdp.ini && \
-    sed -i 's/security_layer=negotiate/security_layer=rdp/' /etc/xrdp/xrdp.ini && \
-    echo "exec startxfce4" > /etc/xrdp/startwm.sh && chmod +x /etc/xrdp/startwm.sh
-
+# Configure XRDP to use the ssl-cert group
 RUN adduser xrdp ssl-cert
+# Set up the default user (Username: developer, Password: password)
+# You can change these values as needed
+RUN useradd -m -s /bin/bash -g ubuntu developer && \
+    echo "developer:password" | chpasswd && \
+    echo "developer ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/developer
 
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
+# Configure the GNOME session specifically for XRDP connections
+RUN echo "export GNOME_SHELL_SESSION_MODE=ubuntu" > /home/developer/.xsessionrc && \
+    echo "export XDG_CURRENT_DESKTOP=GNOME:Ubuntu:GNOME" >> /home/developer/.xsessionrc && \
+    echo "export XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg" >> /home/developer/.xsessionrc && \
+    echo "gnome-session" > /home/developer/.xsession && \
+    chown developer:ubuntu /home/developer/.xsessionrc /home/developer/.xsession
 
+# Expose the standard RDP port
 EXPOSE 3389
 
-CMD ["/start.sh"]
+# Copy supervisor configuration file into the container
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Start Supervisor to manage backend processes
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
