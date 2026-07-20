@@ -28,7 +28,7 @@ RUN adduser xrdp ssl-cert
 # Set up the default user (Username: developer, Password: password)
 # You can change these values as needed
 RUN useradd -m -s /bin/bash  developer && \
-    echo "developer:password" | chpasswd && \
+    echo "developer:gcet1234" | chpasswd && \
     echo "developer ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/developer
 
 # Configure the GNOME session specifically for XRDP connections
