@@ -13,11 +13,10 @@ RUN apt-get update && \
     apt-get install -y ubuntu-gnome-desktop && \
     rm -rf /var/lib/apt/lists/*
 
-RUN apt-get install -y  xrdp \
+RUN apt-get update && apt-get install -y \
+    xrdp \
     curl \
     supervisor \
-    sudo \
-    dbus-x11 \
     x11-xserver-utils \
     wget \
     vim \
