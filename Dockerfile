@@ -16,6 +16,7 @@ RUN apt-get update && \
 RUN apt-get update && apt-get install -y \
     xrdp \
     curl \
+	dbus-x11 \
     wget \
     vim \
     net-tools
