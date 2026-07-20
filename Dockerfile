@@ -23,6 +23,17 @@ RUN apt-get update && apt-get install -y \
 # Set root password
 RUN echo "root:Gcet@321" | chpasswd
 
+RUN sed -i 's/^allowed_users=.*/allowed_users=anybody/' /etc/X11/Xwrapper.config || echo "allowed_users=anybody" >> /etc/X11/Xwrapper.config
+
+# Generate machine-id for dbus
+RUN mkdir -p /var/run/dbus && dbus-uuidgen > /var/lib/dbus/machine-id
+
+RUN sed -i 's/crypt_level=high/crypt_level=low/' /etc/xrdp/xrdp.ini && \
+    sed -i 's/security_layer=negotiate/security_layer=rdp/' /etc/xrdp/xrdp.ini
+    
+
+RUN adduser xrdp ssl-cert
+
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
