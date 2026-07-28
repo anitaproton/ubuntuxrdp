@@ -38,8 +38,8 @@ RUN adduser xrdp ssl-cert
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
-# Expose the standard RDP port
-EXPOSE 3389
+# Expose the standard RDP port, omniroute, ollama ssh https and http
+EXPOSE 20128 20129 11434 3389 443 80 22 
 
 # Copy supervisor configuration file into the container
 # COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
