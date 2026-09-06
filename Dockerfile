@@ -46,8 +46,8 @@ RUN curl -fsSL https://code-server.dev/install.sh | sh
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
-# Expose the standard RDP port, omniroute, ollama ssh https and http
-EXPOSE 20128 20129 11434 3389 443 80 22 
+# Expose the standard RDP port, omniroute, ollama ssh https and http vscode-server[8080]
+EXPOSE 20128 20129 11434 3389 443 80 22 8080
 
 # Copy supervisor configuration file into the container
 # COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
