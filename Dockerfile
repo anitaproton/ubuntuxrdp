@@ -19,7 +19,9 @@ RUN apt-get update && apt-get install -y \
 	dbus-x11 \
     wget \
     vim \
-    net-tools
+    net-tools \
+	openssh-server
+	
     
 # Set root password
 RUN echo "root:Gcet@321" | chpasswd
