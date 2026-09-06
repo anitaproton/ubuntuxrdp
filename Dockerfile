@@ -40,6 +40,9 @@ RUN sed -i 's/crypt_level=high/crypt_level=low/' /etc/xrdp/xrdp.ini && \
 
 RUN adduser xrdp ssl-cert
 
+# Install code-server via the official installation script
+RUN curl -fsSL https://code-server.dev/install.sh | sh
+
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
