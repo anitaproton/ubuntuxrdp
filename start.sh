@@ -12,12 +12,13 @@ systemctl enable ssh
 
 service ssh start
 
+mkdir -p /tmp/.X11-unix
+chmod 1777 /tmp/.X11-unix
+tail -f /var/log/xrdp-sesman.log
+
+
 exec code-server \
     --bind-addr 0.0.0.0:8080 \
     --auth password \
     /root
-
-mkdir -p /tmp/.X11-unix
-chmod 1777 /tmp/.X11-unix
-tail -f /var/log/xrdp-sesman.log
 
