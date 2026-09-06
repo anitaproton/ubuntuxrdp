@@ -13,7 +13,9 @@ systemctl enable ssh
 service ssh start
 
 exec code-server \
-    --bind-addr 0.0.0.0:8080
+    --bind-addr 0.0.0.0:8080 \
+    --auth password \
+    /root
 
 mkdir -p /tmp/.X11-unix
 chmod 1777 /tmp/.X11-unix
